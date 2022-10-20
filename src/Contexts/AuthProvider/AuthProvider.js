@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
   const providerLogin = (provider) => {
     return signInWithPopup(auth, provider);
   };
+
   const authInfo = { user, providerLogin };
 
   return (
