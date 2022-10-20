@@ -19,9 +19,12 @@ const Rightsidenav = () => {
   const googleProvider = new GoogleAuthProvider();
 
   const handleGoogleSignIn = () => {
-    providerLogin(googleProvider).then((result) => {
-      const user = result.user;
-    });
+    providerLogin(googleProvider)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => console.log(error));
   };
   return (
     <div>
