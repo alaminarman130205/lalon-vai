@@ -1,13 +1,14 @@
 import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { toast } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const Login = () => {
   const [error, setError] = useState("");
 
-  const { SignIn } = useContext(AuthContext);
+  const { SignIn, setLoading } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -24,11 +25,18 @@ const Login = () => {
         const user = result.user;
         console.log(user);
         setError("");
-        navigate(from, { replace: true });
+        if (user.emailVerified) {
+          navigate(from, { replace: true });
+        } else {
+          toast.error("please verify your email..... ");
+        }
       })
       .catch((error) => {
         console.log(error);
         setError(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -47,6 +55,7 @@ const Login = () => {
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
         <Form.Control
+          autoComplete=""
           name="password"
           type="password"
           placeholder="Password"

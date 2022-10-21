@@ -70,15 +70,17 @@ const Header = () => {
                 )}
               </Nav>
               <Nav>
-                {user?.photoURL ? (
-                  <Image
-                    style={{ height: "30px" }}
-                    roundedCircle
-                    src={user?.photoURL}
-                  ></Image>
-                ) : (
-                  <FaUser></FaUser>
-                )}
+                <Link to="/profile">
+                  {user?.photoURL ? (
+                    <Image
+                      style={{ height: "30px" }}
+                      roundedCircle
+                      src={user?.photoURL}
+                    ></Image>
+                  ) : (
+                    <FaUser></FaUser>
+                  )}
+                </Link>
               </Nav>
             </Nav>
             <div className="d-lg-none">

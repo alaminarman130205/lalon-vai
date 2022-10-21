@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const Register = () => {
-  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const { createUser, updateUserProfile, verifyEmail } =
+    useContext(AuthContext);
 
   const [error, setError] = useState("");
 
@@ -26,6 +28,8 @@ const Register = () => {
         setError("");
         form.reset();
         handleUpdateUserProfile(name, photourl);
+        handleEmailVerification();
+        toast.success("please verify your email....");
       })
       .catch((error) => {
         console.log(error);
@@ -44,6 +48,12 @@ const Register = () => {
 
   const handleAccepted = (event) => {
     setAccepted(event.target.checked);
+  };
+
+  const handleEmailVerification = () => {
+    verifyEmail()
+      .then(() => {})
+      .catch((error) => console.error(error));
   };
   return (
     <Form onSubmit={hadleSubmit}>
