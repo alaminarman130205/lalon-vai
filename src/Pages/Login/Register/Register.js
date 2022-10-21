@@ -1,12 +1,15 @@
 import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Contexts/AuthProvider/AuthProvider";
 
 const Register = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, updateUserProfile } = useContext(AuthContext);
 
   const [error, setError] = useState("");
+
+  const [accepted, setAccepted] = useState(false);
 
   const hadleSubmit = (event) => {
     event.preventDefault();
@@ -22,11 +25,25 @@ const Register = () => {
         console.log(user);
         setError("");
         form.reset();
+        handleUpdateUserProfile(name, photourl);
       })
       .catch((error) => {
         console.log(error);
         setError(error.message);
       });
+  };
+  const handleUpdateUserProfile = (name, photourl) => {
+    const profile = {
+      displayName: name,
+      photourl: photourl,
+    };
+    updateUserProfile(profile)
+      .then(() => {})
+      .catch((error) => console.error(error));
+  };
+
+  const handleAccepted = (event) => {
+    setAccepted(event.target.checked);
   };
   return (
     <Form onSubmit={hadleSubmit}>
@@ -60,7 +77,18 @@ const Register = () => {
           required
         />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        <Form.Check
+          type="checkbox"
+          onClick={handleAccepted}
+          label={
+            <>
+              <Link to="/terms">Terms And Condition</Link>
+            </>
+          }
+        />
+      </Form.Group>
+      <Button variant="primary" type="submit" disabled={!accepted}>
         Login
       </Button>
       <Form.Text className="text-danger">{error}</Form.Text>
